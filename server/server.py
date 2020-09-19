@@ -20,6 +20,7 @@ class ClientListener(Thread):
         all_data = []
         while True:
             data = self.sock.recv(1024)
+            self.sock.send('ACK')
 
             if data:
                 all_data += list(data)
@@ -27,8 +28,9 @@ class ClientListener(Thread):
                 (file_name, file_data) = ClientListener.split_by_delimiter(bytes(all_data))
 
                 if file_name and file_data:
-                    file_name = ClientListener.get_unused_file_name(file_name)
                     print(f'Received {file_name} ({len(file_data)}) bytes')
+                    file_name = ClientListener.get_unused_file_name(file_name)
+                    
                     with open(file_name, 'wb') as f:
                         f.write(file_data)
  
