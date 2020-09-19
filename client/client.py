@@ -4,16 +4,14 @@ import sys
 
 delimiter = '@@@@@'.encode()
 
-def send_bytes(data : bytes, sock : socket):
+def send_bytes(data : bytes, sock : socket, print_progress=False):
     totalsent = 0
     while totalsent < len(data):
         sent = sock.send(data[totalsent:])
         if sent == 0:
             raise RuntimeError("socket connection broken")
         totalsent += sent
-
-        ack = sock.recv(4)
-        if bytearray(ack) == bytearray('ACK'.encode()):
+        if print_progress:
             print('Sent {:.2%}'.format(totalsent / len(data)))    
 
 def main():
@@ -30,7 +28,7 @@ def main():
             send_bytes(delimiter, sock)
 
             msg = f.read()
-            send_bytes(msg, sock)
+            send_bytes(msg, sock, True)
         #with open(file_name, 'rb') as f:
             #session.write(file_name.encode())
             #session.write(delimiter)

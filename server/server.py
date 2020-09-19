@@ -21,7 +21,6 @@ class ClientListener(Thread):
         all_data = []
         while True:
             data = self.sock.recv(1024)
-            self.sock.send('ACK'.encode())
 
             if data:
                 all_data += list(data)
