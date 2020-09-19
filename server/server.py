@@ -1,6 +1,7 @@
 import socket
 from threading import Thread
 import os
+import sys
 
 delimiter = '@@@@@'.encode()
 
@@ -81,7 +82,7 @@ class ClientListener(Thread):
 def main():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        sock.bind(('', 8800))
+        sock.bind(('', int(sys.argv[1])))
         sock.listen()
         while True:
             con, addr = sock.accept()
